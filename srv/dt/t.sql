@@ -1,0 +1,1 @@
+SELECT users.id, users.firstname, profile.* from profile left join users on profile .id = profile.id;
