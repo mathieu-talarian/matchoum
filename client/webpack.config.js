@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   webpack.config.js                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mmoullec <mmoullec@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/30 17:13:29 by mmoullec          #+#    #+#             */
-/*   Updated: 2018/10/04 09:07:18 by mmoullec         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
@@ -39,9 +27,12 @@ const sourceMaps = {
   }
 };
 
-let cssLoaders = [
-  { loader: "css-loader", options: { importLoaders: 1, minimize: !dev } }
-];
+let cssLoaders = [{
+  loader: "css-loader",
+  options: {
+    importLoaders: 1
+  }
+}];
 
 // if (!dev) {
 cssLoaders.push({
@@ -59,7 +50,7 @@ cssLoaders.push({
 module.exports = {
   // mode: options.development ? 'development' : 'production',
   mode: "development",
-  entry: "./src/index.js",
+  entry: ["./src/index.js"],
   output: {
     path: __dirname + "/dist",
     filename: "index.js"
@@ -70,7 +61,9 @@ module.exports = {
     contentBase: path.join(__dirname, "dist"),
     compress: true,
     port: 9000,
-    proxy: { "/api/v1": "http://localhost:3000" }
+    proxy: {
+      "/api/v1": "http://localhost:3000"
+    }
   },
 
   // "/socket.io": {
@@ -78,8 +71,7 @@ module.exports = {
   //   ws: true
   // }
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
@@ -91,17 +83,27 @@ module.exports = {
         }
       },
       {
+        test: /\.(html)$/,
+        use: {
+          loader: 'html-loader',
+          options: {
+            attrs: [':data-src']
+          }
+        }
+      },
+      {
         test: /.tsx?$/,
         exclude: /node_modules/,
-        use: [
-          {
+        use: [{
             loader: "babel-loader",
             options: {
               presets: ["@babel/preset-env", "@babel/preset-react"],
               plugins: ["@babel/plugin-proposal-object-rest-spread"]
             }
           },
-          { loader: "ts-loader" }
+          {
+            loader: "ts-loader"
+          }
         ]
       },
       {
@@ -140,7 +142,9 @@ module.exports = {
           "babel-loader",
           {
             loader: "@svgr/webpack",
-            options: { babel: false }
+            options: {
+              babel: false
+            }
           }
         ]
       },
@@ -156,11 +160,11 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/index.html",
-      filename: "./index.html"
+      filename: "index.html",
+      childen: false
     }),
     new webpack.ProvidePlugin({
-      Promise:
-        "imports-loader?this=>global!exports-loader?global.Promise!bluebird"
+      Promise: "imports-loader?this=>global!exports-loader?global.Promise!bluebird"
     }),
     new ExtractTextPlugin({
       filename: dev ? "[name].css" : "[name].[contenthash:8].css",

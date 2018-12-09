@@ -10,7 +10,7 @@ class ConfirmationPage extends Component {
     loading: true,
     success: false
   };
-
+  
   componentDidMount() {
     this.props
       .confirm(this.props.match.params.token)
@@ -19,6 +19,7 @@ class ConfirmationPage extends Component {
   }
 
   render() {
+    console.log("here");
     const { loading, success } = this.state;
     return (
       <div>

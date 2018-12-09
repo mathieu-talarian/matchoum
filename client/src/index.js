@@ -32,7 +32,7 @@ if (localStorage.JWT) {
   setAuthorizationHeader(localStorage.JWT);
   store.dispatch(userLoggedIn(user));
 }
-
+console.log("test")
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
